@@ -9,23 +9,15 @@ html, body {
   font-size: 18px;
 }
 
-body {
-  margin: 80px 0;
-}
-
-/* ---------- Header ---------- */
-
-.heading:after {
-  content: "";
-  display: block;
-  clear: both;
+.container {
+  width: 500px;
+  margin: 80px auto 0;
 }
 
 h1.title {
   font-size: 80px;
   font-weight: bold;
   margin: 0;
-  display: block;
   float: left;
 }
 
@@ -35,7 +27,6 @@ h1.title {
 }
 
 .score-container, .best-container {
-  position: relative;
   display: inline-block;
   background: #bbada0;
   padding: 15px 25px;
@@ -45,35 +36,28 @@ h1.title {
   font-weight: bold;
   border-radius: 3px;
   color: white;
-  margin-top: 8px;
   text-align: center;
+  position: relative;
 }
 
-.score-container:after, .best-container:after {
+.score-container:after { content: "Score"; position: absolute; top: 10px; left: 0; width: 100%; font-size: 13px; color: #eee4da; text-transform: uppercase; }
+.best-container:after { content: "Best"; position: absolute; top: 10px; left: 0; width: 100%; font-size: 13px; color: #eee4da; text-transform: uppercase; }
+
+.score-addition {
   position: absolute;
-  width: 100%;
-  top: 10px;
-  left: 0;
-  text-transform: uppercase;
-  font-size: 13px;
-  line-height: 13px;
-  text-align: center;
-  color: #eee4da;
+  right: 30px;
+  font-size: 25px;
+  color: rgba(119,110,101,0.9);
+  animation: move-up 400ms ease-in;
 }
-
-.score-container:after { content: "Score"; }
-.best-container:after  { content: "Best"; }
-
-/* ---------- Layout ---------- */
-
-.container {
-  width: 500px;
-  margin: 0 auto;
+@keyframes move-up {
+  0% { top: 25px; opacity: 1; }
+  100% { top: -25px; opacity: 0; }
 }
 
 .game-container {
-  margin-top: 40px;
   position: relative;
+  margin-top: 40px;
   padding: 15px;
   background: #bbada0;
   border-radius: 6px;
@@ -81,7 +65,6 @@ h1.title {
   height: 500px;
   box-sizing: border-box;
   user-select: none;
-  touch-action: none;
 }
 
 .grid-container {
@@ -92,14 +75,6 @@ h1.title {
 .grid-row {
   margin-bottom: 15px;
 }
-.grid-row:last-child {
-  margin-bottom: 0;
-}
-.grid-row:after {
-  content: "";
-  display: block;
-  clear: both;
-}
 
 .grid-cell {
   width: 106.25px;
@@ -107,13 +82,11 @@ h1.title {
   margin-right: 15px;
   float: left;
   border-radius: 3px;
-  background: rgba(238, 228, 218, 0.35);
-}
-.grid-cell:last-child {
-  margin-right: 0;
+  background: rgba(238,228,218,0.35);
 }
 
-/* ---------- Tiles ---------- */
+.grid-row:last-child .grid-cell { margin-bottom: 0; }
+.grid-cell:last-child { margin-right: 0; }
 
 .tile-container {
   position: absolute;
@@ -128,28 +101,7 @@ h1.title {
 
 .tile {
   position: absolute;
-  will-change: transform;
-}
-
-/* --- Minimal tile pop --- */
-@keyframes tile-appear {
-  0%   { transform: scale(0.9); opacity: 0.3; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes tile-merge {
-  0%   { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-/* Spawn animation */
-.tile-new .tile-inner {
-  animation: tile-appear 100ms ease-out;
-}
-
-/* Merge animation */
-.tile-merged .tile-inner {
-  animation: tile-merge 100ms ease-in-out;
+  transition: transform 100ms ease-in-out;
 }
 
 .tile .tile-inner {
@@ -157,109 +109,56 @@ h1.title {
   background: #eee4da;
   text-align: center;
   font-weight: bold;
-  z-index: 10;
   font-size: 55px;
+  color: #776e65;
 }
 
-/* Colors */
-.tile.tile-2 .tile-inner    { background: #eee4da; }
-.tile.tile-4 .tile-inner    { background: #ede0c8; }
-.tile.tile-8 .tile-inner    { color: #f9f6f2; background: #f2b179; }
-.tile.tile-16 .tile-inner   { color: #f9f6f2; background: #f59563; }
-.tile.tile-32 .tile-inner   { color: #f9f6f2; background: #f67c5f; }
-.tile.tile-64 .tile-inner   { color: #f9f6f2; background: #f65e3b; }
-.tile.tile-128 .tile-inner  { color: #f9f6f2; background: #edcf72; font-size: 45px; }
-.tile.tile-256 .tile-inner  { color: #f9f6f2; background: #edcc61; font-size: 45px; }
-.tile.tile-512 .tile-inner  { color: #f9f6f2; background: #edc850; font-size: 45px; }
-.tile.tile-1024 .tile-inner { color: #f9f6f2; background: #edc53f; font-size: 35px; }
-.tile.tile-2048 .tile-inner { color: #f9f6f2; background: #edc22e; font-size: 35px; }
-.tile.tile-super .tile-inner { color: #f9f6f2; background: #3c3a32; font-size: 30px; }
+/* Basic tile colors */
+.tile-2 .tile-inner { background: #eee4da; }
+.tile-4 .tile-inner { background: #ede0c8; }
+.tile-8 .tile-inner { background: #f2b179; color: #f9f6f2; }
+.tile-16 .tile-inner { background: #f59563; color: #f9f6f2; }
+.tile-32 .tile-inner { background: #f67c5f; color: #f9f6f2; }
+.tile-64 .tile-inner { background: #f65e3b; color: #f9f6f2; }
+.tile-128 .tile-inner { background: #edcf72; color: #f9f6f2; font-size: 45px; }
+.tile-256 .tile-inner { background: #edcc61; color: #f9f6f2; font-size: 45px; }
+.tile-512 .tile-inner { background: #edc850; color: #f9f6f2; font-size: 45px; }
+.tile-1024 .tile-inner { background: #edc53f; color: #f9f6f2; font-size: 35px; }
+.tile-2048 .tile-inner { background: #edc22e; color: #f9f6f2; font-size: 35px; }
+.tile-super .tile-inner { background: #3c3a32; color: #f9f6f2; font-size: 30px; }
 
-/* ---------- Game overlay ---------- */
-
-.game-container .game-message {
-  display: none;
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
-  background: rgba(238, 228, 218, 0.5);
-  z-index: 100;
-  text-align: center;
+/* Crucial animations: tile spawn and merge */
+@keyframes appear {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.tile-new .tile-inner {
+  animation: appear 150ms ease;
 }
 
-.game-container .game-message p {
-  font-size: 60px;
-  font-weight: bold;
-  height: 60px;
-  line-height: 60px;
-  margin-top: 222px;
+@keyframes pop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.tile-merged .tile-inner {
+  animation: pop 150ms ease;
 }
 
-.game-container .game-message .lower {
-  display: block;
-  margin-top: 59px;
-}
-
-.game-container .game-message a {
-  display: inline-block;
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  margin-left: 9px;
-}
-
-.game-container .game-message.game-won {
-  background: rgba(237, 194, 46, 0.5);
-  color: #f9f6f2;
-}
-
-.game-container .game-message.game-won a.keep-playing-button {
-  display: inline-block;
-}
-
-.game-container .game-message.game-won,
-.game-container .game-message.game-over {
-  display: block;
-}
-
-/* ---------- Misc ---------- */
-
-.above-game:after { content: ""; display: block; clear: both; }
-
-.game-intro {
-  float: left;
-  line-height: 42px;
-}
-
-.restart-button {
-  display: inline-block;
-  background: #8f7a66;
-  border-radius: 3px;
-  padding: 0 20px;
-  text-decoration: none;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  text-align: center;
-  float: right;
-}
-
-/* ---------- Responsive ---------- */
-
-@media screen and (max-width: 520px) {
-  html, body { font-size: 15px; }
-  body { margin: 20px 0; padding: 0 20px; }
-  h1.title { font-size: 27px; margin-top: 15px; }
-  .container { width: 280px; margin: 0 auto; }
-  .score-container, .best-container { margin-top: 0; padding: 15px 10px; }
-  .game-container { width: 280px; height: 280px; padding: 10px; margin-top: 17px; }
-  .grid-row { margin-bottom: 10px; }
-  .grid-cell { width: 57.5px; height: 57.5px; margin-right: 10px; }
-  .tile, .tile .tile-inner { width: 58px; height: 58px; line-height: 58px; }
-  .tile .tile-inner { font-size: 35px; }
-  .game-message p { font-size: 30px; height: 30px; line-height: 30px; margin-top: 90px; }
-  .game-message .lower { margin-top: 30px; }
-}
+/* Tile positioning for 4x4 grid */
+.tile.tile-position-1-1 { transform: translate(0px, 0px); }
+.tile.tile-position-1-2 { transform: translate(0px, 121px); }
+.tile.tile-position-1-3 { transform: translate(0px, 242px); }
+.tile.tile-position-1-4 { transform: translate(0px, 363px); }
+.tile.tile-position-2-1 { transform: translate(121px, 0px); }
+.tile.tile-position-2-2 { transform: translate(121px, 121px); }
+.tile.tile-position-2-3 { transform: translate(121px, 242px); }
+.tile.tile-position-2-4 { transform: translate(121px, 363px); }
+.tile.tile-position-3-1 { transform: translate(242px, 0px); }
+.tile.tile-position-3-2 { transform: translate(242px, 121px); }
+.tile.tile-position-3-3 { transform: translate(242px, 242px); }
+.tile.tile-position-3-4 { transform: translate(242px, 363px); }
+.tile.tile-position-4-1 { transform: translate(363px, 0px); }
+.tile.tile-position-4-2 { transform: translate(363px, 121px); }
+.tile.tile-position-4-3 { transform: translate(363px, 242px); }
+.tile.tile-position-4-4 { transform: translate(363px, 363px); }
